@@ -10,9 +10,9 @@ for the wallpaper(s) and it's informations.
 
 ❣ i hope it would be an useful tool for you, thank me later if it is!
 
-# 🔆 How to use this bash script? (requires terminal or termux to be installed.)
+# 🔆 How to use this bash script?
 ```
-pkg install git || sudo apt install git; git clone https://github.com/forsaken-heart24/FLOSSPaperOneUI/; cd FLOSSPaperOneUI; chmod +x FLOSSPaper.sh && ./FLOSSPaper.sh
+git clone https://github.com/forsaken-heart24/FLOSSPaperOneUI/; cd FLOSSPaperOneUI; chmod +x FLOSSPaper.sh && ./FLOSSPaper.sh
 ```
 
 # ⭕ What to do after executing the script?
@@ -24,8 +24,8 @@ pkg install git || sudo apt install git; git clone https://github.com/forsaken-h
 
 * Recompile the application, sign the new APK, and place it in the "system/priv-app/wallpaper-res/" folder. Finally, reboot your device. You're now set up with custom wallpapers in the system.
 
-## ❌ Wanna improve it, or want to give any ideas? Join our support chat for more!
-* [Telegram Chat](https://t.me/equinoxfromlunaandetclore)
+## ❌ Wanna improve it, or want to give any ideas?
+* [Contact me at Luna's Project Bugreporter BOT!](https://t.me/luna_project_bugreporter_bot)
  
 ## 🛑 Supported OneUI Versions (for now)
 -------------------
