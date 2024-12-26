@@ -1,71 +1,24 @@
 function ADD_THE_WALLPAPER_METADATA() {
     local value="$1"
-    local the_type_of_wallpaper="$2"
-	local index_score=$3
-    the_type_of_wallpaper="$(echo "${the_type_of_wallpaper}" | tr '[:upper:]' '[:lower:]')"
+    local the_type_of_wallpaper="$(string_format -l "$2")"
+    local index_score=$3
+    local which
+    local isDefault
+
+    # Determine the "which" value and the "isDefault" flag based on the wallpaper type
+    if [ "$the_type_of_wallpaper" == "home" ]; then
+        which=1
+        isDefault="true"
+    elif [ "$the_type_of_wallpaper" == "lock" ]; then
+        which=2
+        isDefault="true"
+    elif [ "$the_type_of_wallpaper" == "additionals" ]; then
+        which=1
+        isDefault="false"
+    fi
     
-    cat >> resources_info.json << EOF
-    {
-EOF
-
-    case "$the_type_of_wallpaper" in
-        home)
-            cat >> resources_info.json << EOF
-        "isDefault": ${the_homescreen_wallpaper_has_been_set},
-        "index": ${index_score},
-        "which": 1,
-        "screen": 0,
-        "type": 0,
-        "filename": "wallpaper_${value}.png",
-        "frame_no": -1,
-        "cmf_info": [""]
-    }${special_symbol}
-EOF
-        ;;
-        
-        lock)
-            cat >> resources_info.json << EOF
-        "isDefault": ${the_lockscreen_wallpaper_has_been_set},
-        "index": ${index_score},
-        "which": 2,
-        "screen": 0,
-        "type": 0,
-        "filename": "wallpaper_${value}.png",
-        "frame_no": -1,
-        "cmf_info": [""]
-    }${special_symbol}
-EOF
-        ;;
-        
-        additionals)
-            cat >> resources_info.json << EOF
-        "isDefault": false,
-        "index": ${index_score},
-        "which": 1,
-        "screen": 0,
-        "type": 0,
-        "filename": "wallpaper_${value}.png",
-        "frame_no": -1,
-        "cmf_info": [""]
-    }${special_symbol}
-EOF
-        ;;
-    esac
-}
-
-function json_header() {
-    cat >> resources_info.json << EOF
-{
-  "version": "0.0.1",
-  "phone": [
-EOF
-}
-
-function json_ending_stuffs() {
-    cat >> resources_info.json << EOF
-  ]
-}
-EOF
+    # Append the JSON data to resources_info.json
+    echo -e "{\n\t\"isDefault\": \"$isDefault\",\n\t\"index\": $index_score,\n\t\"which\": $which,\n\t\"screen\": 0,\n\t\"type\": 0,\n\t\"filename\": \"wallpaper_${value}.png\",\n\t\"frame_no\": -1,\n\t\"cmf_info\": [\"\"]\n}${special_symbol}" >> resources_info.json
 }
 
 function main () {
@@ -78,11 +31,11 @@ function main () {
     local wallpaper_count_additional_int=00
     local continue_the_thing=true
     
-    # Prompt for the number of wallpapers
+	# the main stuff starts from here!
     printf "\e[1;36m - How many wallpapers do you need to add to the FLOSSPaper App?\e[0;37m "
     read wallpaper_count
 
-    # Validate input for wallpaper count
+    # failsafe, let's avoid weird values..
     if ! [[ "$wallpaper_count" =~ ^[0-9]+$ ]]; then
         continue_the_thing=false
         echo -e "\e[0;31m - Invalid input. Please enter a valid number. Exiting...\e[0;37m"
@@ -91,7 +44,7 @@ function main () {
     if $continue_the_thing; then
         rm -rf resources_info.json
         touch resources_info.json
-        json_header
+        echo -e "{\n\t\"version\": \"0.0.1\",\n\t\"phone\": [" > resources_info.json
         echo -e " - Adding requested number of wallpapers to the list..\n"
 
         # Loop through each wallpaper
@@ -112,7 +65,7 @@ function main () {
                 special_symbol=","
             fi
 
-            # Ask the user how to handle each wallpaper iterations.
+            # Ask the user how to handle each wallpaper
             echo -e "\e[1;36m - What do you want to do with wallpaper_${wallpaper_count_additional_int}${i}.png?\e[0;37m"
             if ! $the_lockscreen_wallpaper_has_been_set; then
                 echo "[1] - Set this as the default lockscreen wallpaper.."
@@ -148,7 +101,8 @@ function main () {
                     ;;
                 *)
                     echo -e "\e[0;31m Invalid response! Please enter a valid option.\e[0;37m"
-                    sleep 2
+                    rm resources_info.json
+					sleep 2
                     exit 1
                     ;;
             esac
@@ -157,10 +111,9 @@ function main () {
             echo ""
         done
         
-		# dawn
-        json_ending_stuffs
+        echo -e "  ]\n}" >> resources_info.json
 
-        # Warning messages if default wallpapers haven't set
+        # Warning messages if default wallpapers were not set
         if ! $the_homescreen_wallpaper_has_been_set; then
             echo -e "\e[0;31m - Warning! The default homescreen wallpaper was not included in the lists.\e[0;37m"
         fi
@@ -170,7 +123,10 @@ function main () {
     fi
 }
 
-# nein nein
+# nein nein nein
+sleep 0.5
+console_print "Welcome to FLOSSPaper!"
+console_print "Made by Luna (@forsaken-heart24 Github)"
 main
 echo -e "\e[0;31m"
 echo "######################################################################"
