@@ -10,10 +10,12 @@ for the wallpaper(s) and it's informations.
 
 ❣ i hope it would be an useful tool for you, thank me later if it is!
 
-# 🔆 How to use this bash script?
+# 🔆 How to run this bash script?
+- Install curl if you haven't already installed it.
 ```
-git clone https://github.com/forsaken-heart24/FLOSSPaperOneUI/; cd FLOSSPaperOneUI; chmod +x FLOSSPaper.sh && ./FLOSSPaper.sh
+curl https://raw.githubusercontent.com/forsaken-heart24/FLOSSPaperOneUI/refs/heads/main/FLOSSPaper.sh | sh
 ```
+- Run that command and wait for the script to get cached, That's it!
 
 # ⭕ What to do after executing the script?
 * The shell script will tell you where did the resources_info.json file is located after the job is being done.
